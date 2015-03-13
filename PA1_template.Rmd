@@ -114,6 +114,6 @@ new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median
 new.median_total_steps_per_day
 ```
 
-The new mean and median total number of steps taken per day are `r new.mean_total_steps_per_day` and `r new.median_total_steps_per_day`, respectively.
+The new mean and median total number of steps taken per day are `r new.mean_total_steps_per_day` and `r new.median_total_steps_per_day`, respectively. Compared to the original dataset, both mean and median are higher because the missing values (which are counted as zeros) have been replaced by the mean number of steps taken, averaged across all days, which can be higher than zero. This can also be observed as the decreased height of the zero bin column in the new histogram compared with the original one.
 
 ## Are there differences in activity patterns between weekdays and weekends?
