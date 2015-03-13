@@ -1,25 +1,119 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
+## Loading the required packages and setting some global options
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+library(ggplot2)
+
+options(scipen = 1, digits = 0)
+```
 
 ## Loading and preprocessing the data
 
+Read the data into a data frame from the zipped csv file and transform the columns to the most appropriate class.
+
+```{r}
+data = read.csv(unz("activity.zip", "activity.csv"), colClasses = c("numeric", "Date", "numeric"))
+```
+
+Check the column transformations and the number of rows.
+
+```{r}
+str(data)
+```
 
 
 ## What is mean total number of steps taken per day?
 
+Group and summarise the data dy day using dplyr functions and plot the histogram of the total number of steps taken per day.
 
+```{r}
+data = tbl_df(data)
+
+total_steps_per_day = data %>%
+  group_by(date) %>%
+  summarise(total_steps_per_day = sum(steps, na.rm = TRUE))
+
+ggplot(total_steps_per_day, aes(x = total_steps_per_day)) +
+  geom_histogram(binwidth = 1000) +
+  theme_bw()
+
+mean_total_steps_per_day = summarise(total_steps_per_day, val = mean(total_steps_per_day))
+
+mean_total_steps_per_day
+
+median_total_steps_per_day = summarise(total_steps_per_day, val = median(total_steps_per_day))
+
+median_total_steps_per_day
+```
+
+The mean and median total number of steps taken per day are `r mean_total_steps_per_day` and `r median_total_steps_per_day`, respectively.
 
 ## What is the average daily activity pattern?
 
+Group and summarise the data by interval using dplyr functions and plot the average daily activity pattern.
 
+```{r}
+average_steps_per_interval = data %>%
+  group_by(interval) %>%
+  summarise(average_steps_per_interval = mean(steps, na.rm = TRUE))
+
+ggplot(average_steps_per_interval, aes(x = interval, y = average_steps_per_interval)) +
+  geom_line() +
+  theme_bw()
+
+interval_with_max_average_steps = average_steps_per_interval %>%
+  filter(average_steps_per_interval == max(average_steps_per_interval)) %>%
+  select(interval)
+
+interval_with_max_average_steps
+```
+
+The interval with the max number of steps taken, averaged across all days, is `r interval_with_max_average_steps`.
 
 ## Imputing missing values
 
+Filter and summarise the missing values in the data using dplyr functions.
 
+```{r}
+total_missing = data %>%
+  filter(is.na(steps)) %>%
+  summarise(val = n())
+
+total_missing
+```
+
+The total number of missing values is `r total_missing`.
+
+Create new dataset from the original one by replacing the missing values with the mean number of steps taken, averaged across all days, for that interval.
+
+```{r}
+new.data = data %>%
+  group_by(interval) %>%
+  mutate(steps = ifelse(is.na(steps), mean(steps, na.rm = TRUE), steps))
+```
+
+Group and summarise the new dataset dy day using dplyr functions and plot the histogram of the total number of steps taken per day.
+
+```{r}
+new.total_steps_per_day = new.data %>%
+  group_by(date) %>%
+  summarise(total_steps_per_day = sum(steps, na.rm = TRUE))
+
+ggplot(new.total_steps_per_day, aes(x = total_steps_per_day)) +
+  geom_histogram(binwidth = 1000) +
+  theme_bw()
+
+new.mean_total_steps_per_day = summarise(new.total_steps_per_day, val = mean(total_steps_per_day))
+
+new.mean_total_steps_per_day
+
+new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median(total_steps_per_day))
+
+new.median_total_steps_per_day
+```
+
+The new mean and median total number of steps taken per day are `r new.mean_total_steps_per_day` and `r new.median_total_steps_per_day`, respectively.
 
 ## Are there differences in activity patterns between weekdays and weekends?
