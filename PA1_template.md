@@ -207,4 +207,4 @@ ggplot(new.average_steps_per_interval, aes(x = interval, y = average_steps_per_i
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
-As expected, the weekend activity pattern is shifted to the right (at a later time of day) compared to the weekday activity pattern.
+As expected for an average person, the weekend activity pattern is shifted to the right (at a later time of day) compared to the weekday activity pattern.
