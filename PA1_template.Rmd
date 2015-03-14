@@ -1,4 +1,7 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: html_document
+---
 
 ## Loading the required packages and setting some global options
 
@@ -17,7 +20,7 @@ Read the data into a data frame from the zipped csv file and transform the colum
 data = read.csv(unz("activity.zip", "activity.csv"), colClasses = c("numeric", "Date", "numeric"))
 ```
 
-Check the column transformations and the number of rows.
+Check the column transformations and the number of rows (it should be 17568!).
 
 ```{r}
 str(data)
@@ -86,7 +89,7 @@ total_missing
 
 The total number of missing values is `r total_missing`.
 
-Create new dataset from the original one by replacing the missing values with the mean number of steps taken, averaged across all days, for that interval.
+Create a new dataset from the original one by replacing the missing values with the mean number of steps taken, averaged across all days, for that interval.
 
 ```{r}
 new.data = data %>%
@@ -117,3 +120,19 @@ new.median_total_steps_per_day
 The new mean and median total number of steps taken per day are `r new.mean_total_steps_per_day` and `r new.median_total_steps_per_day`, respectively. Compared to the original dataset, both mean and median are higher because the missing values (which are counted as zeros) have been replaced by the mean number of steps taken, averaged across all days, which can be higher than zero. This can also be observed as the decreased height of the zero bin column in the new histogram compared with the original one.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+Add a column indicating whether the date is a weekday or a weekend, then group and summarise the data by interval using dplyr functions and plot the average daily activity pattern for weekday and weekend.
+
+```{r}
+new.average_steps_per_interval = data %>%
+  mutate(weekday.or.weekend = factor(weekdays(date) %in% c('Saturday', 'Sunday') + 0L, levels=c(0,1), labels=c('weekday','weekend'))) %>%
+  group_by(interval, weekday.or.weekend) %>%
+  summarise(average_steps_per_interval = mean(steps, na.rm = TRUE))
+
+ggplot(new.average_steps_per_interval, aes(x = interval, y = average_steps_per_interval)) +
+  facet_grid(weekday.or.weekend ~ .) +
+  geom_line() +
+  theme_bw()
+```
+
+As expected, the weekend activity pattern is shifted to the right (later time) compared to the weekday activity pattern.
