@@ -195,7 +195,7 @@ Add a column indicating whether the date is a weekday or a weekend, then group a
 
 ```r
 new.average_steps_per_interval = data %>%
-  mutate(weekday.or.weekend = factor(weekdays(date) %in% c('Saturday', 'Sunday') + 0L, levels=c(0,1), labels=c('weekday','weekend'))) %>%
+  mutate(weekday.or.weekend = factor(as.integer(weekdays(date) %in% c('Saturday', 'Sunday')), levels=c(0,1), labels=c('weekday','weekend'))) %>%
   group_by(interval, weekday.or.weekend) %>%
   summarise(average_steps_per_interval = mean(steps, na.rm = TRUE))
 
