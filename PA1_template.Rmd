@@ -43,13 +43,9 @@ ggplot(total_steps_per_day, aes(x = total_steps_per_day)) +
   geom_histogram(binwidth = 1000) +
   theme_bw()
 
-mean_total_steps_per_day = summarise(total_steps_per_day, val = mean(total_steps_per_day))
+mean_total_steps_per_day = summarise(total_steps_per_day, val = mean(total_steps_per_day)) %>% print
 
-mean_total_steps_per_day
-
-median_total_steps_per_day = summarise(total_steps_per_day, val = median(total_steps_per_day))
-
-median_total_steps_per_day
+median_total_steps_per_day = summarise(total_steps_per_day, val = median(total_steps_per_day)) %>% print
 ```
 
 The mean and median total number of steps taken per day are `r mean_total_steps_per_day` and `r median_total_steps_per_day`, respectively.
@@ -69,9 +65,8 @@ ggplot(average_steps_per_interval, aes(x = interval, y = average_steps_per_inter
 
 interval_with_max_average_steps = average_steps_per_interval %>%
   filter(average_steps_per_interval == max(average_steps_per_interval)) %>%
-  select(interval)
-
-interval_with_max_average_steps
+  select(interval) %>%
+  print
 ```
 
 The interval with the max number of steps taken, averaged across all days, is `r interval_with_max_average_steps`.
@@ -83,9 +78,8 @@ Filter and summarise the missing values in the data using dplyr functions.
 ```{r}
 total_missing = data %>%
   filter(is.na(steps)) %>%
-  summarise(val = n())
-
-total_missing
+  summarise(val = n()) %>%
+  print
 ```
 
 The total number of missing values is `r total_missing`.
@@ -109,13 +103,9 @@ ggplot(new.total_steps_per_day, aes(x = total_steps_per_day)) +
   geom_histogram(binwidth = 1000) +
   theme_bw()
 
-new.mean_total_steps_per_day = summarise(new.total_steps_per_day, val = mean(total_steps_per_day))
+new.mean_total_steps_per_day = summarise(new.total_steps_per_day, val = mean(total_steps_per_day)) %>% print
 
-new.mean_total_steps_per_day
-
-new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median(total_steps_per_day))
-
-new.median_total_steps_per_day
+new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median(total_steps_per_day)) %>% print
 ```
 
 The new mean and median total number of steps taken per day are `r new.mean_total_steps_per_day` and `r new.median_total_steps_per_day`, respectively. Compared to the original dataset, both mean and median are higher because the missing values (which are counted as zeros) have been replaced by the mean number of steps taken, averaged across all days, which can be higher than zero. This can also be observed as the decreased height of the zero bin column in the new histogram compared with the original one.

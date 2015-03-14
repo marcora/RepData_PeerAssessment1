@@ -53,9 +53,7 @@ ggplot(total_steps_per_day, aes(x = total_steps_per_day)) +
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 ```r
-mean_total_steps_per_day = summarise(total_steps_per_day, val = mean(total_steps_per_day))
-
-mean_total_steps_per_day
+mean_total_steps_per_day = summarise(total_steps_per_day, val = mean(total_steps_per_day)) %>% print
 ```
 
 ```
@@ -66,9 +64,7 @@ mean_total_steps_per_day
 ```
 
 ```r
-median_total_steps_per_day = summarise(total_steps_per_day, val = median(total_steps_per_day))
-
-median_total_steps_per_day
+median_total_steps_per_day = summarise(total_steps_per_day, val = median(total_steps_per_day)) %>% print
 ```
 
 ```
@@ -100,9 +96,8 @@ ggplot(average_steps_per_interval, aes(x = interval, y = average_steps_per_inter
 ```r
 interval_with_max_average_steps = average_steps_per_interval %>%
   filter(average_steps_per_interval == max(average_steps_per_interval)) %>%
-  select(interval)
-
-interval_with_max_average_steps
+  select(interval) %>%
+  print
 ```
 
 ```
@@ -122,9 +117,8 @@ Filter and summarise the missing values in the data using dplyr functions.
 ```r
 total_missing = data %>%
   filter(is.na(steps)) %>%
-  summarise(val = n())
-
-total_missing
+  summarise(val = n()) %>%
+  print
 ```
 
 ```
@@ -161,9 +155,7 @@ ggplot(new.total_steps_per_day, aes(x = total_steps_per_day)) +
 ![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
 ```r
-new.mean_total_steps_per_day = summarise(new.total_steps_per_day, val = mean(total_steps_per_day))
-
-new.mean_total_steps_per_day
+new.mean_total_steps_per_day = summarise(new.total_steps_per_day, val = mean(total_steps_per_day)) %>% print
 ```
 
 ```
@@ -174,9 +166,7 @@ new.mean_total_steps_per_day
 ```
 
 ```r
-new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median(total_steps_per_day))
-
-new.median_total_steps_per_day
+new.median_total_steps_per_day = summarise(new.total_steps_per_day, val = median(total_steps_per_day)) %>% print
 ```
 
 ```
